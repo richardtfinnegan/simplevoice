@@ -1,53 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>SimpleVoice</title>
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #f2f2f2;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
+body {
+  margin: 0;
+  background: #f2f2f2;
+  font-family: -apple-system, sans-serif;
 }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    height: 100vh;
-    width: 100vw;
-    gap: 8px;
-    padding: 8px;
-    box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  padding: 14px;
+  box-sizing: border-box;
 }
 
-.button {
-    background: white;
-    border-radius: 18px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    font-size: 22px;
-    font-weight: bold;
-    text-align: center;
-    border: none;
+button {
+  background: white;
+  border: none;
+  border-radius: 24px;
+  padding: 12px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.button img {
-    width: 60%;
-    height: auto;
-    margin-bottom: 8px;
-}
-
-.button:active {
-    transform: scale(0.97);
-    background: #e6f0ff;
+button img {
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
 }
 </style>
 </head>
@@ -56,91 +45,49 @@ html, body {
 
 <div class="grid">
 
-<button class="button" onclick="speak('Meat')">
-<img src="meat.png"><div>Meat</div>
-</button>
+<!-- Row 1 -->
+<button onclick="speak('I want meat')"><img src="meat.png"></button>
+<button onclick="speak('I want soup')"><img src="soup.png"></button>
+<button onclick="speak('I want cookie')"><img src="cookie.png"></button>
+<button onclick="speak('I want water')"><img src="water.png"></button>
 
-<button class="button" onclick="speak('Soup')">
-<img src="soup.png"><div>Soup</div>
-</button>
+<!-- Row 2 -->
+<button onclick="speak('I want toast')"><img src="toast.png"></button>
+<button onclick="speak('I want juice')"><img src="juice.png"></button>
+<button onclick="speak('I want yoghurt')"><img src="yoghurt.png"></button>
+<button onclick="speak('I want porridge')"><img src="porridge.png"></button>
 
-<button class="button" onclick="speak('Cookie')">
-<img src="cookie.png"><div>Cookie</div>
-</button>
+<!-- Row 3 -->
+<button onclick="speak('I want to drive')"><img src="drive.png"></button>
+<button onclick="speak('I want walk')"><img src="walk.png"></button>
+<button onclick="speak('I want bus')"><img src="bus.png"></button>
+<button onclick="speak('I want swim')"><img src="swim.png"></button>
 
-<button class="button" onclick="speak('Water')">
-<img src="water.png"><div>Water</div>
-</button>
-
-<button class="button" onclick="speak('Toast')">
-<img src="toast.png"><div>Toast</div>
-</button>
-
-<button class="button" onclick="speak('Juice')">
-<img src="juice.png"><div>Juice</div>
-</button>
-
-<button class="button" onclick="speak('Yoghurt')">
-<img src="yoghurt.png"><div>Yoghurt</div>
-</button>
-
-<button class="button" onclick="speak('Porridge')">
-<img src="porridge.png"><div>Porridge</div>
-</button>
-
-<button class="button" onclick="speak('Drive')">
-<img src="drive.png"><div>Drive</div>
-</button>
-
-<button class="button" onclick="speak('Walk')">
-<img src="walk.png"><div>Walk</div>
-</button>
-
-<button class="button" onclick="speak('Bus')">
-<img src="bus.png"><div>Bus</div>
-</button>
-
-<button class="button" onclick="speak('Swim')">
-<img src="swim.png"><div>Swim</div>
-</button>
-
-<button class="button" onclick="speak('Bed')">
-<img src="bed.png"><div>Bed</div>
-</button>
-
-<button class="button" onclick="speak('Bathroom')">
-<img src="bathroom.png"><div>Bathroom</div>
-</button>
-
-<button class="button" onclick="speak('YouTube')">
-<img src="youtube.png"><div>YouTube</div>
-</button>
-
-<button class="button" onclick="speak('Home')">
-<img src="home.png"><div>Home</div>
-</button>
+<!-- Row 4 -->
+<button onclick="speak('I want bed')"><img src="bed.png"></button>
+<button onclick="speak('I want bathroom')"><img src="bathroom.png"></button>
+<button onclick="speak('I want YouTube')"><img src="youtube.png"></button>
+<button onclick="speak('I want to go home')"><img src="home.png"></button>
 
 </div>
 
 <script>
 function speak(text) {
-    const msg = new SpeechSynthesisUtterance(text);
-    msg.rate = 0.95;
-    msg.pitch = 1;
-    msg.volume = 1;
+  speechSynthesis.cancel();
 
-    const voices = speechSynthesis.getVoices();
-    const boyVoice = voices.find(v => 
-        v.name.includes("Daniel") || 
-        v.name.includes("Alex")
-    );
+  const voices = speechSynthesis.getVoices();
+  const voice =
+    voices.find(v => v.name.includes("Daniel")) ||
+    voices.find(v => v.name.includes("Alex")) ||
+    voices.find(v => v.lang.startsWith("en"));
 
-    if (boyVoice) {
-        msg.voice = boyVoice;
-    }
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.voice = voice;
+  utterance.rate = 1.0;
+  utterance.pitch = 1.1;
+  utterance.volume = 1.0;
 
-    speechSynthesis.cancel();
-    speechSynthesis.speak(msg);
+  speechSynthesis.speak(utterance);
 }
 </script>
 
